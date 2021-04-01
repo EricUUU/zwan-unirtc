@@ -1,0 +1,202 @@
+<template>
+	<view>
+		<zwan-rtc ref="myVideo" @onMsg="onMsg" @onQueryDevice="onQueryDevice" @onQos="onQos" @onQuery="onQuery"
+			style="width:100%;height:350px"></zwan-rtc>
+		<view class="btnContainer">
+			<button class="login" type="primary" style="width: 150px;height: 50px; margin: 0 auto; margin-left: 20px;"
+				@click="loginClick">{{ login }}</button>
+			<button class="videoone" type="primary"
+				style="width: 150px;height: 50px; margin: 0 auto; margin-left: 10px;"
+				@click="videoOneClick">{{ videoone }}</button>
+			<button class="videomore" type="primary"
+				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;"
+				@click="videoMoreClick">{{ videomore }}</button>
+			<button class="videohk" type="primary"
+				style="width: 180px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="videoHkClick">{{ hkvideo }}</button>
+		</view>
+		<view class="btnContainer2">
+			<button type="primary"
+				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="LogOutClick">{{ logout }}</button>
+			<button type="primary"
+				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="StopStreamClick">{{ stopstream }}</button>
+			<button type="primary"
+				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="SwitchcameraClick">{{ switchcamera }}</button>
+			<button type="primary"
+				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="SwitchscreenClick">{{ switchscreen }}</button>
+			<button type="primary"
+				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="SwitchcavideoClick">{{ switchcavideo }}</button>
+
+		</view>
+		<view class="btnContainer3">
+			<button type="primary"
+				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="SendmsgClick">{{ sendmsg }}</button>
+			<button type="primary"
+				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="QueryCallClick">{{ queryCall }}</button>
+			<button type="primary"
+				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="MiconoffClick">{{ miconoff }}</button>
+			<button type="primary"
+				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="SpeakeronffClick">{{ speakeronff }}</button>
+			<button type="primary"
+				style="width: 180px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="QueryHKlistClick">{{ queryhkcamera }}</button>
+
+		</view>
+	</view>
+</template>
+
+<script>
+	var _self;
+	export default {
+		data() {
+			return {
+				login: '组件登录',
+				videoone: '单画面视频',
+				videomore: '多方视频',
+				hkvideo: '海康摄像头实时视频',
+				logout: '登出',
+				stopstream: '结束视频',
+				switchcamera: '切换镜头',
+				switchscreen: '共享屏幕',
+				switchcavideo: '切回摄像头视频',
+				sendmsg: '发送消息',
+				queryCall: '查询成员',
+				miconoff: '麦克风开关',
+				speakeronff: '扬声器开关',
+				queryhkcamera: '海康摄像头列表查询'
+			}
+		},
+		onLoad: function() {
+			_self = this;
+		},
+		onReady: function() {
+			this.$refs.myVideo.ZwanSDK_Init("stun:stun.zwan.com.cn:2231", "ws://183.66.37.186:2338")
+			plus.android.requestPermissions(['android.permission.CAMERA', 'android.permission.RECORD_AUDIO',
+				'android.permission.WRITE_EXTERNAL_STORAGE', 'android.permission.READ_EXTERNAL_STORAGE'
+			], function(e) {
+				if (e.deniedAlways.length > 0) { //权限被永久拒绝  
+					// 弹出提示框解释为何需要权限，引导用户打开设置页面开启  
+					console.log('权限被永久拒绝' + e.deniedAlways.toString());
+				}
+				if (e.deniedPresent.length > 0) { //权限被临时拒绝  
+					// 弹出提示框解释为何需要权限，可再次调用plus.android.requestPermissions申请权限  
+					console.log('权限被临时拒绝' + e.deniedPresent.toString());
+				}
+				if (e.granted.length > 0) { //权限被允许  
+
+				}
+			}, function(e) {
+				console.log('Request Permissions error:' + JSON.stringify(e));
+			});
+			console.log('初始化SDK 完成')
+			setTimeout(function() {
+				_self.initSDK();
+			}, 1500);
+		},
+		methods: {
+			initSDK: function() {
+				this.$refs.myVideo.ZwanSDK_InitConfiguration()
+				console.log('初始化SDK 回调侦听 完成')
+			},
+			loginClick: function(e) {
+				this.$refs.myVideo.ZwanSDK_Login("UniAPP", "房间名")
+				console.log("登录了");
+			},
+			videoOneClick: function(e) {
+				this.$refs.myVideo.ZwanSDK_StreamStart(2, 2, 0, 1, 1920, 1080, 15, 300000, 800000, 1500000, true, true,
+					true, true, true, true, true, true, "udp", "H264")
+				console.log("单人视频");
+			},
+			videoMoreClick: function(e) {
+				this.$refs.myVideo.ZwanSDK_StreamStart(2, 0, 1, 9, 1920, 1080, 15, 300000, 800000, 1500000, true, true,
+					true, true, true, true, true, true, "udp", "H264")
+				console.log("多人视频");
+			},
+			videoHkClick: function(e) {
+				this.$refs.myVideo.ZwanSDK_StreamStartDevice("海康摄像头ID", 2, 0, 9, 1920, 1080, 15, 300000, 800000, 1500000, true, true,
+					true, true, true, true, true, true, "udp", "H264")
+				console.log("海康视频");
+			},
+			LogOutClick: function(e) {
+				this.$refs.myVideo.ZwanSDK_Logout()
+			},
+			StopStreamClick: function(e) {
+				this.$refs.myVideo.ZwanSDK_StreamStop()
+			},
+			SwitchcameraClick: function(e) {
+				this.$refs.myVideo.ZwanSDK_SwitchAroundCamera()
+			},
+			SwitchscreenClick: function(e) {
+				this.$refs.myVideo.ZwanSDK_SwitchScreen()
+			},
+			SwitchcavideoClick: function(e) {
+				this.$refs.myVideo.ZwanSDK_SwitchCamera()
+			},
+			SendmsgClick: function(e) {
+				this.$refs.myVideo.ZwanSDK_SendMsg("笨笨鄂菜","all")
+			},
+			QueryCallClick: function(e) {
+				this.$refs.myVideo.ZwanSDK_Querycall("房间名")
+			},
+			MiconoffClick: function(e) {
+				this.$refs.myVideo.ZwanSDK_MicMute()
+			},
+			SpeakeronffClick: function(e) {
+				this.$refs.myVideo.ZwanSDK_SpeakerMute()
+			},
+			QueryHKlistClick: function(e) {
+				this.$refs.myVideo.ZwanSDK_Querydevice()
+			},
+			onMsg: function(e) {
+				console.log("消息:" + e.detail.message);
+			},
+			onQueryDevice: function(e) {
+				console.log("查询海康设备:" + e.detail.querydevice);
+			},
+			onQos: function(e) {
+				console.log("QOS信息:" + e.detail.qos);
+			},
+			onQuery: function(e) {
+				console.log("Query成员列表信息:" + e.detail.querycall);
+			}
+
+		}
+	}
+</script>
+
+<style>
+	.btnContainer {
+		padding: 10rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.btnContainer2 {
+		padding: 10rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.btnContainer3 {
+		padding: 10rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	/* .video{width: 100%;height:300px;background: black;margin: 0 auto;} */
+</style>
