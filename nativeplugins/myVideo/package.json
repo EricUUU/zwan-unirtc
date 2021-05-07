@@ -10,7 +10,7 @@
 			{
 				"type": "component",
 				"name": "zwan-rtc",
-				"class": "com.zwan.unizwanrtc.ZwanVideoView"
+				"class": "com.zwan.zwanrtc.unicomponent.ZwanVideoView"
 			}
 		],
 		

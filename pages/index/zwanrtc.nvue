@@ -1,84 +1,159 @@
 <template>
-	<view>
-		<zwan-rtc ref="myVideo" @onMsg="onMsg" @onQueryDevice="onQueryDevice" @onQos="onQos" @onQuery="onQuery"
-			style="width:100%;height:350px"></zwan-rtc>
+	<view :style="{'width':'100%','height': videoHeight}">
+
+		<view class="video-container">
+			<zwan-rtc ref="myVideo" :style="{'width':'100%','height': videoHeight}" @onMsg="onMsg"
+				@onQueryDevice="onQueryDevice" @onQos="onQos" @onQuery="onQuery"></zwan-rtc>
+		</view>
+		<view style="width: 100%;height: 200px">
+		<text class="word" style="font-size: 13;color: #4CD964;">{{roomId}}</text>
+		</view>
 		<view class="btnContainer">
-			<button class="login" type="primary" style="width: 150px;height: 50px; margin: 0 auto; margin-left: 20px;"
+			<button class="login" type="primary" style="width: 100px;height: 50px; margin: 0 auto; margin-left: 20px;"
 				@click="loginClick">{{ login }}</button>
 			<button class="videoone" type="primary"
-				style="width: 150px;height: 50px; margin: 0 auto; margin-left: 10px;"
+				style="width: 100px;height: 50px; margin: 0 auto; margin-left: 10px;"
 				@click="videoOneClick">{{ videoone }}</button>
 			<button class="videomore" type="primary"
-				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;"
 				@click="videoMoreClick">{{ videomore }}</button>
 			<button class="videohk" type="primary"
-				style="width: 180px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
 				@click="videoHkClick">{{ hkvideo }}</button>
 		</view>
 		<view class="btnContainer2">
 			<button type="primary"
-				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
 				@click="LogOutClick">{{ logout }}</button>
 			<button type="primary"
-				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
 				@click="StopStreamClick">{{ stopstream }}</button>
 			<button type="primary"
-				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
 				@click="SwitchcameraClick">{{ switchcamera }}</button>
-			<button type="primary"
-				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
-				@click="SwitchscreenClick">{{ switchscreen }}</button>
-			<button type="primary"
-				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
-				@click="SwitchcavideoClick">{{ switchcavideo }}</button>
+
 		</view>
 		<view class="btnContainer3">
 			<button type="primary"
-				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="SwitchscreenClick">{{ switchscreen }}</button>
+			<button type="primary"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="SwitchcavideoClick">{{ switchcavideo }}</button>
+			<button type="primary"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
 				@click="SendmsgClick">{{ sendmsg }}</button>
-			<button type="primary"
-				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
-				@click="QueryCallClick">{{ queryCall }}</button>
-			<button type="primary"
-				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
-				@click="MiconoffClick">{{ miconoff }}</button>
-			<button type="primary"
-				style="width: 150px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
-				@click="SpeakeronffClick">{{ speakeronff }}</button>
-			<button type="primary"
-				style="width: 180px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
-				@click="QueryHKlistClick">{{ queryhkcamera }}</button>
+
 
 		</view>
+		<view class="btnContainer4">
+			<button type="primary"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="QueryCallClick">{{ queryCall }}</button>
+			<button type="primary"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="MiconoffClick">{{ miconoff }}</button>
+			<button type="primary"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="SpeakeronffClick">{{ speakeronff }}</button>
+
+		</view>
+		<view class="btnContainer5">
+			<button type="primary"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="QueryHKlistClick">{{ queryhkcamera }}</button>
+
+
+
+			<button type="primary"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="Login2Click">{{ login2 }}</button>
+			<button type="primary"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="StreamStart2Click">{{ videostartstream2 }}</button>
+
+		</view>
+		<view class="btnContainer6">
+			<button type="primary"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="Logout2Click">{{ logout2 }}</button>
+			<button type="primary"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="SwitchVideoClick1">{{ switchvideo1 }}</button>
+			<button type="primary"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="SwitchVideoClick2">{{ switchvideo2 }}</button>
+		</view>
+		<view class="btnContainer7">
+			<button type="primary"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="Login3Click">{{ login3 }}</button>
+			<button type="primary"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="StreamStart3Click">{{ videostartstream3 }}</button>
+			<button type="primary"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="Logout3Click">{{ logout3 }}</button>
+
+		</view>
+		<view class="btnContainer8">
+			<button type="primary"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="SwitchVideoClick3">{{ switchvideo3 }}</button>
+			<button type="primary"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="QueryClick2">{{ query2 }}</button>
+			<button type="primary"
+				style="width: 100px;height: 50px; margin: 0 auto;margin-left: 10px;margin-right: 20px;"
+				@click="QueryClick3">{{ query3 }}</button>
+		</view>
+
 	</view>
 </template>
 
 <script>
 	var _self;
+	var senderID;
+	var senderID2;
+	var senderID3;
 	export default {
 		data() {
 			return {
-				login: '组件登录',
+				roomId: '',
+				login: '登录1',
 				videoone: '单画面视频',
-				videomore: '多方视频',
-				hkvideo: '海康摄像头实时视频',
+				videomore: '纯语音',
+				hkvideo: '海康视频',
 				logout: '登出',
 				stopstream: '结束视频',
 				switchcamera: '切换镜头',
-				switchscreen: '共享屏幕',
-				switchcavideo: '切回摄像头视频',
+				switchscreen: '空流',
+				switchcavideo: '切回摄像头',
 				sendmsg: '发送消息',
 				queryCall: '查询成员',
 				miconoff: '麦克风开关',
 				speakeronff: '扬声器开关',
-				queryhkcamera: '海康摄像头列表查询'
+				queryhkcamera: '海康查询',
+				switchvideo1: '显示视频1',
+				switchvideo2: '显示视频2',
+				login2: '登录2',
+				videostartstream2: '推流2',
+				logout2: '登出2',
+				switchvideo3: '显示视频3',
+				login3: '登录3',
+				videostartstream3: '推流3',
+				logout3: '登出3',
+				query2: '查询2',
+				query3: '查询3',
 			}
 		},
 		onLoad: function() {
 			_self = this;
+			this.setScreenHeight();
 		},
 		onReady: function() {
-			this.$refs.myVideo.ZwanSDK_Init("stun:stun.zwan.com.cn:2231", "ws://183.66.37.186:2338")
+			this.$refs.myVideo.ZwanSDK_Init("stun:stun.zwan.com.cn:2431", "wss://meeting.zwan.com.cn:2437/websocket")
+			// this.$refs.myVideo.ZwanSDK_Init("stun:stun.zwan.com.cn:2231", "ws://183.66.37.186:2338")
 			plus.android.requestPermissions(['android.permission.CAMERA', 'android.permission.RECORD_AUDIO',
 				'android.permission.WRITE_EXTERNAL_STORAGE', 'android.permission.READ_EXTERNAL_STORAGE'
 			], function(e) {
@@ -107,65 +182,141 @@
 				console.log('初始化SDK 回调侦听 完成')
 			},
 			loginClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_Login("UniAPP", "房间名")
+				this.$refs.myVideo.ZwanSDK_Login("UniAPP", "333", senderid => {
+					console.log("登录成功SenderID:" + senderid);
+					senderID = senderid;
+				});
 				console.log("登录了");
 			},
 			videoOneClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_StreamStart(2, 2, 0, 1, 1920, 1080, 15, 300000, 800000, 1500000, true, true,
-					true, true, true, true, true, true, "udp", "H264")
-				console.log("单人视频");
+				this.$refs.myVideo.ZwanSDK_StreamStart(senderID, 1, 1, 0, 1, 1920, 1080, 15, 300000, 800000, 1500000,
+					true, true, true, true, true, true, true, true, "udp", "H264")
+				console.log("单人摄像头视频:" + senderID);
 			},
 			videoMoreClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_StreamStart(2, 0, 1, 9, 1920, 1080, 15, 300000, 800000, 1500000, true, true,
-					true, true, true, true, true, true, "udp", "H264")
-				console.log("多人视频");
+				this.$refs.myVideo.ZwanSDK_StreamStart(senderID, 0, 1, 0, 1, 1920, 1080, 15, 300000, 800000, 1500000,
+					true, true,
+					false, false, true, false, true, false, "udp", "H264")
+				console.log("纯语音");
 			},
 			videoHkClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_StreamStartDevice("海康摄像头ID", 2, 0, 9, 1920, 1080, 15, 300000, 800000, 1500000, true, true,
+				this.$refs.myVideo.ZwanSDK_StreamStartDevice(senderID, "海康摄像头ID", 2, 0, 9, 1920, 1080, 15, 300000,
+					800000, 1500000, true, true,
 					true, true, true, true, true, true, "udp", "H264")
 				console.log("海康视频");
 			},
 			LogOutClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_Logout()
+				this.$refs.myVideo.ZwanSDK_Logout(senderID)
 			},
 			StopStreamClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_StreamStop()
+				this.$refs.myVideo.ZwanSDK_StreamStop(senderID)
 			},
 			SwitchcameraClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_SwitchAroundCamera()
+				this.$refs.myVideo.ZwanSDK_SwitchAroundCamera(senderID)
 			},
 			SwitchscreenClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_SwitchScreen()
+				this.$refs.myVideo.ZwanSDK_SwitchCaptureStream(senderID,0)
 			},
 			SwitchcavideoClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_SwitchCamera()
+				this.$refs.myVideo.ZwanSDK_SwitchCaptureStream(senderID,1)
 			},
 			SendmsgClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_SendMsg("笨笨鄂菜","all")
+				this.$refs.myVideo.ZwanSDK_SendMsg(senderID, "笨笨鄂菜", "all")
+				console.log("发送消息:" + senderID);
 			},
 			QueryCallClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_Querycall("房间名")
+				this.$refs.myVideo.ZwanSDK_Querycall(senderID, "20210408kn86ne2h_auxi")
 			},
 			MiconoffClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_MicMute()
+				this.$refs.myVideo.ZwanSDK_MicMute(senderID, false)
 			},
 			SpeakeronffClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_SpeakerMute()
+				this.$refs.myVideo.ZwanSDK_SpeakerMute(senderID, false)
 			},
 			QueryHKlistClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_Querydevice()
+				this.$refs.myVideo.ZwanSDK_Querydevice(senderID)
+			},
+			SwitchVideoClick1: function(e) {
+				this.$refs.myVideo.ZwanSDK_SwitchMutilVideo(senderID)
+				console.log("切换视频显示:" + senderID);
+			},
+			SwitchVideoClick2: function(e) {
+				this.$refs.myVideo.ZwanSDK_SwitchMutilVideo(senderID2)
+				console.log("切换视频显示:" + senderID2);
+			},
+			Login2Click: function(e) {
+				this.$refs.myVideo.ZwanSDK_Login("UniAPP2", "222", senderid => {
+					senderID2 = senderid;
+				});
+
+			},
+			StreamStart2Click: function(e) {
+				this.$refs.myVideo.ZwanSDK_StreamStart(senderID2, 1, 2, 0, 1, 1920, 1080, 15, 300000, 800000, 1500000,
+					false, false,
+					true, false, false, true, false, false, "udp", "H264")
+			},
+			Logout2Click: function(e) {
+				this.$refs.myVideo.ZwanSDK_Logout(senderID2)
+			},
+			Login3Click: function(e) {
+				this.$refs.myVideo.ZwanSDK_Login("UniAPP2", "roomSelf-pc-蒋远林", senderid => {
+					senderID3 = senderid;
+				});
+
+			},
+			StreamStart3Click: function(e) {
+				this.$refs.myVideo.ZwanSDK_StreamStart(senderID3, 0, 2, 0, 1, 1920, 1080, 15, 300000, 800000, 1500000,
+					false, false, false, true, false, false, false, true, "udp", "H264")
+			},
+			Logout3Click: function(e) {
+				this.$refs.myVideo.ZwanSDK_Logout(senderID3)
+			},
+			SwitchVideoClick3: function(e) {
+				this.$refs.myVideo.ZwanSDK_SwitchMutilVideo(senderID3)
+				console.log("切换视频显示:" + senderID3);
+			},
+			QueryClick2: function(e) {
+				this.$refs.myVideo.ZwanSDK_Querycall(senderID2, "222")
+			},
+			QueryClick3: function(e) {
+				// this.$refs.myVideo.ZwanSDK_Querycall(senderID3, "20210408kn86ne2h")
+
+				this.$refs.myVideo.ZwanSDK_SwitchVoiceOut(1)
+				console.log("调用听筒:" + senderID3);
+			},
+			// 设置组件为手机屏幕高度
+			setScreenHeight() {
+				uni.getSystemInfo({
+					success: (res) => {
+						console.log('获取系统信息 getSystemInfo===>', res);
+						this.videoHeight = parseFloat(res.windowHeight);
+						console.log('this.videoHeight', this.videoHeight);
+					}
+				});
+			},
+			computed: {
+				getHeight() {
+					let height = 0;
+					uni.getSystemInfo({
+						success: function(res) {
+							height = res.screenHeight;
+						}
+					});
+					return height;
+				}
 			},
 			onMsg: function(e) {
-				console.log("消息:" + e.detail.message);
+				this.roomId="发送人ID:" + e.detail.senderid + ",消息:" + e.detail.message;
+				console.log("发送人ID:" + e.detail.senderid + ",消息:" + e.detail.message);
 			},
 			onQueryDevice: function(e) {
-				console.log("查询海康设备:" + e.detail.querydevice);
+				console.log("发送人ID:" + e.detail.senderid + ",查询海康设备:" + e.detail.querydevice);
 			},
 			onQos: function(e) {
-				console.log("QOS信息:" + e.detail.qos);
+				//console.log("发送人ID:" + e.detail.senderid + ",QOS信息:" + e.detail.qos);
 			},
 			onQuery: function(e) {
-				console.log("Query成员列表信息:" + e.detail.querycall);
+				console.log("发送人ID:" + e.detail.senderid + ",Query成员列表信息:" + e.detail.querycall);
 			}
 
 		}
@@ -173,8 +324,28 @@
 </script>
 
 <style>
+	.main-video {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		position: relative;
+		width: 750rpx;
+		background-color: #7d7d7d;
+	}
+
+	.video-container {
+		position: absolute;
+		left: 0;
+		width: 750rpx;
+		min-height: 400rpx;
+		background-color: transparent;
+		z-index: 10;
+	}
+
 	.btnContainer {
 		padding: 10rpx;
+		margin-top: 200rpx;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -190,6 +361,46 @@
 	}
 
 	.btnContainer3 {
+		padding: 10rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.btnContainer4 {
+		padding: 10rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.btnContainer5 {
+		padding: 10rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.btnContainer6 {
+		padding: 10rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.btnContainer7 {
+		padding: 10rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.btnContainer8 {
 		padding: 10rpx;
 		display: flex;
 		flex-direction: row;
