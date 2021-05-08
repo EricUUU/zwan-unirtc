@@ -152,8 +152,8 @@
 			this.setScreenHeight();
 		},
 		onReady: function() {
-			this.$refs.myVideo.ZwanSDK_Init("stun:stun.zwan.com.cn:2431", "wss://meeting.zwan.com.cn:2437/websocket")
-			// this.$refs.myVideo.ZwanSDK_Init("stun:stun.zwan.com.cn:2231", "ws://183.66.37.186:2338")
+			// this.$refs.myVideo.ZwanSDK_Init("stun:stun.zwan.com.cn:2237", "wss://meeting.zwan.com.cn:2237/websocket")
+			this.$refs.myVideo.ZwanSDK_Init("stun:stun.zwan.com.cn:2231", "ws://183.66.37.186:2338")
 			plus.android.requestPermissions(['android.permission.CAMERA', 'android.permission.RECORD_AUDIO',
 				'android.permission.WRITE_EXTERNAL_STORAGE', 'android.permission.READ_EXTERNAL_STORAGE'
 			], function(e) {
@@ -182,22 +182,22 @@
 				console.log('初始化SDK 回调侦听 完成')
 			},
 			loginClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_Login("UniAPP", "333", senderid => {
+				this.$refs.myVideo.ZwanSDK_Login("UniAPP", "12", senderid => {
 					console.log("登录成功SenderID:" + senderid);
 					senderID = senderid;
 				});
 				console.log("登录了");
 			},
 			videoOneClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_StreamStart(senderID, 1, 1, 0, 1, 1920, 1080, 15, 300000, 800000, 1500000,
-					true, true, true, true, true, true, true, true, "udp", "H264")
+				this.$refs.myVideo.ZwanSDK_StreamStart(senderID, 1, 1, 0, 1, 640, 480, 15, 300000, 800000, 1500000,
+					false, false,true, false, false, true, false, false, "udp", "H264")
 				console.log("单人摄像头视频:" + senderID);
 			},
 			videoMoreClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_StreamStart(senderID, 0, 1, 0, 1, 1920, 1080, 15, 300000, 800000, 1500000,
-					true, true,
-					false, false, true, false, true, false, "udp", "H264")
-				console.log("纯语音");
+				this.$refs.myVideo.ZwanSDK_StreamStart(senderID, 0, 2, 0, 1, 1920, 1080, 15, 300000, 800000, 1500000,
+					false,false,false,true,false, false,
+					                        false,true, "udp", "H264")
+				console.log("观看视频");
 			},
 			videoHkClick: function(e) {
 				this.$refs.myVideo.ZwanSDK_StreamStartDevice(senderID, "海康摄像头ID", 2, 0, 9, 1920, 1080, 15, 300000,
