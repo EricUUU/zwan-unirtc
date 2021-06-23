@@ -5,11 +5,16 @@
 			<zwan-rtc ref="myVideo" :style="{'width':'100%','height': videoHeight}" @onMsg="onMsg"
 				@onQueryDevice="onQueryDevice" @onQos="onQos" @onQuery="onQuery"></zwan-rtc>
 		</view>
-		<view style="width: 100%;height: 200px">
-		<text class="word" style="font-size: 13;color: #4CD964;">{{roomId}}</text>
+		<view style="width: 100%;height: 220px">
+			<text class="word" style="font-size: 13;color: #4CD964;">{{roomId}}</text>
 		</view>
+		<view style="margin-left: 20px;">
+			<text class="word" style="font-size: 27;color:red">房间名</text>
+			<input class="login-input" style="font-size: 20;" type="text" v-model="roomName" placeholder="请输入房间名">
+		</view>
+
 		<view class="btnContainer">
-			<button class="login" type="primary" style="width: 100px;height: 50px; margin: 0 auto; margin-left: 20px;"
+			<button class="login" type="primary" style="width: 100px;height: 50px; margin: 0 auto; margin-left: 10px;"
 				@click="loginClick">{{ login }}</button>
 			<button class="videoone" type="primary"
 				style="width: 100px;height: 50px; margin: 0 auto; margin-left: 10px;"
@@ -127,7 +132,7 @@
 				logout: '登出',
 				stopstream: '结束视频',
 				switchcamera: '切换镜头',
-				switchscreen: '空流',
+				switchscreen: '共享屏幕',
 				switchcavideo: '切回摄像头',
 				sendmsg: '发送消息',
 				queryCall: '查询成员',
@@ -145,6 +150,7 @@
 				logout3: '登出3',
 				query2: '查询2',
 				query3: '查询3',
+				roomName: '100',
 			}
 		},
 		onLoad: function() {
@@ -152,9 +158,12 @@
 			this.setScreenHeight();
 		},
 		onReady: function() {
-			// this.$refs.myVideo.ZwanSDK_Init("stun:stun.zwan.com.cn:2237", "wss://meeting.zwan.com.cn:2237/websocket")
-			// this.$refs.myVideo.ZwanSDK_Init("stun:113.207.109.120:40000", "ws://113.207.109.120:40002/websocket")
-				this.$refs.myVideo.ZwanSDK_Init("stun:stun.zwan.com.cn:2231", "ws://183.66.37.186:2338")
+			this.$refs.myVideo.ZwanSDK_Init("stun:stun.zwan.com.cn:2231", "wss://meeting.zwan.com.cn:2237/websocket")
+			// this.$refs.myVideo.ZwanSDK_Init("stun:stun.zwan.com.cn:2231", "ws://meeting.zwan.com.cn:2238/websocket")
+			// this.$refs.myVideo.ZwanSDK_Init("stun:113.207.109.120:40000", "ws://113.207.109.120:40002/websocket") //进出口
+			// this.$refs.myVideo.ZwanSDK_Init("stun:stun.zwan.com.cn:2231", "ws://183.66.37.186:2238")
+			// this.$refs.myVideo.ZwanSDK_Init("stun:stun.zwan.com.cn:2231", "ws://183.66.37.186:2338")//保利
+			// this.$refs.myVideo.ZwanSDK_Init("stun:10.0.0.125:2231", "ws://10.0.0.125:2238/websocket")//汽博内网
 			plus.android.requestPermissions(['android.permission.CAMERA', 'android.permission.RECORD_AUDIO',
 				'android.permission.WRITE_EXTERNAL_STORAGE', 'android.permission.READ_EXTERNAL_STORAGE'
 			], function(e) {
@@ -175,7 +184,7 @@
 			console.log('初始化SDK 完成')
 			setTimeout(function() {
 				_self.initSDK();
-			}, 1500);
+			}, 500);
 		},
 		methods: {
 			initSDK: function() {
@@ -183,25 +192,39 @@
 				console.log('初始化SDK 回调侦听 完成')
 			},
 			loginClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_Login("UniAPP", "11", senderid => {
+				//34020000001320000008
+				this.$refs.myVideo.ZwanSDK_Login("观看摄像头", "34020000001340000111", senderid => {
 					console.log("登录成功SenderID:" + senderid);
 					senderID = senderid;
 				});
 				console.log("登录了");
 			},
 			videoOneClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_StreamStart(senderID, 1, 2, 1, 1, 640, 480, 15, 300000, 800000, 1500000,
-					true, true,true, true, true, true, true, true, "udp", "H264")
+				this.$refs.myVideo.ZwanSDK_StreamStart(senderID, 1, 2, 0, 1, 640, 480, 7, 300000, 500000, 1500000,
+					false, false, true, false, false, true, false, false, "udp", "H264") //只推
+				// this.$refs.myVideo.ZwanSDK_StreamStart(senderID, 1, 2, 0, 1, 1920, 1080, 15, 300000, 800000, 1500000,
+				// 	false, false,true, true, false, true, false, true, "udp", "H264")//又推又拉视频
 				console.log("单人摄像头视频:" + senderID);
+
 			},
 			videoMoreClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_StreamStart(senderID, 0, 2, 1, 1, 1920, 1080, 15, 300000, 800000, 1500000,
-					false,false,false,true,false, false,
-					                        false,true, "udp", "H264")
+
+				this.$refs.myVideo.ZwanSDK_StreamStart(senderID, 0, 2, 1, 1, 1280, 720, 15, 300000, 800000, 1500000,
+					false, false, false, true, false, false, false, true, "udp", "H264") //纯观看
+
+				// 	this.$refs.myVideo.ZwanSDK_StreamStart(senderID, 0, 2, 1, 1, 1920, 1080, 15, 300000, 800000, 1500000,
+				// 		true,true,false,false,true, false, true,false, "udp", "H264")//纯语音
+
+				// this.$refs.myVideo.ZwanSDK_StreamStart(senderID, 1, 2, 0, 1, 1920, 1080, 15, 300000, 800000, 1500000,
+				// 	false, false,true, false, false, true, false, false, "udp", "H264")//纯推摄像头
+
+				// 	this.$refs.myVideo.ZwanSDK_StreamStart(senderID, 1, 2, 0, 1, 1920, 1080, 15, 300000, 800000, 1500000,
+				// 		false, false,true, true, false, true, false, true, "udp", "H264")//又推又拉视频
 				console.log("观看视频");
 			},
 			videoHkClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_StreamStartDevice(senderID, "34020000001320000011", 2, 0, 9, 1920, 1080, 15, 300000,
+				this.$refs.myVideo.ZwanSDK_StreamStartDevice(senderID, "34020000001320000011", 2, 0, 9, 1920, 1080, 15,
+					300000,
 					800000, 1500000, true, true,
 					true, true, true, true, true, true, "udp", "H264")
 				console.log("海康视频");
@@ -216,10 +239,10 @@
 				this.$refs.myVideo.ZwanSDK_SwitchAroundCamera(senderID)
 			},
 			SwitchscreenClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_SwitchCaptureStream(senderID,0)
+				this.$refs.myVideo.ZwanSDK_SwitchCaptureStream(senderID, 3)
 			},
 			SwitchcavideoClick: function(e) {
-				this.$refs.myVideo.ZwanSDK_SwitchCaptureStream(senderID,1)
+				this.$refs.myVideo.ZwanSDK_SwitchCaptureStream(senderID, 1)
 			},
 			SendmsgClick: function(e) {
 				this.$refs.myVideo.ZwanSDK_SendMsg(senderID, "笨笨鄂菜", "all")
@@ -229,6 +252,7 @@
 				this.$refs.myVideo.ZwanSDK_Querycall(senderID, "roomSelf-app-笋子杰")
 			},
 			MiconoffClick: function(e) {
+				//true 打开 false 关闭
 				this.$refs.myVideo.ZwanSDK_MicMute(senderID, false)
 			},
 			SpeakeronffClick: function(e) {
@@ -246,27 +270,27 @@
 				console.log("切换视频显示:" + senderID2);
 			},
 			Login2Click: function(e) {
-				this.$refs.myVideo.ZwanSDK_Login("UniAPP2", "522", senderid => {
+				this.$refs.myVideo.ZwanSDK_Login("第二流", "roomSelf-pc-蒋远林", senderid => {
 					senderID2 = senderid;
 				});
 
 			},
 			StreamStart2Click: function(e) {
-				this.$refs.myVideo.ZwanSDK_StreamStart(senderID2, 1, 2, 0, 1, 1920, 1080, 15, 300000, 800000, 1500000,
-					true, true,
-					false, false, true, false, true, false, "udp", "H264")
+				this.$refs.myVideo.ZwanSDK_StreamStart(senderID2, 0, 2, 0, 1, 1920, 1080, 15, 300000, 800000, 1500000,
+					false, false, false, true, false, false, false, true, "udp", "H264") //观看
+
 			},
 			Logout2Click: function(e) {
 				this.$refs.myVideo.ZwanSDK_Logout(senderID2)
 			},
 			Login3Click: function(e) {
-				this.$refs.myVideo.ZwanSDK_Login("UniAPP2", "roomSelf-pc-蒋远林", senderid => {
+				this.$refs.myVideo.ZwanSDK_Login("第三流", "roomSelf-pc-子集", senderid => {
 					senderID3 = senderid;
 				});
 
 			},
 			StreamStart3Click: function(e) {
-				this.$refs.myVideo.ZwanSDK_StreamStart(senderID3, 0, 2, 0, 1, 1920, 1080, 15, 300000, 800000, 1500000,
+				this.$refs.myVideo.ZwanSDK_StreamStart(senderID3, 0, 2, 0, 1, 480, 320, 6, 100000, 400000, 1500000,
 					false, false, false, true, false, false, false, true, "udp", "H264")
 			},
 			Logout3Click: function(e) {
@@ -284,6 +308,9 @@
 
 				this.$refs.myVideo.ZwanSDK_SwitchVoiceOut(1)
 				console.log("调用听筒:" + senderID3);
+			},
+			search(event) {
+				console.log(event.currentTarget.value)
 			},
 			// 设置组件为手机屏幕高度
 			setScreenHeight() {
@@ -307,8 +334,69 @@
 				}
 			},
 			onMsg: function(e) {
-				this.roomId="发送人ID:" + e.detail.senderid + ",消息:" + e.detail.message;
+				this.roomId = "发送人ID:" + e.detail.senderid + ",消息:" + e.detail.message;
 				console.log("发送人ID:" + e.detail.senderid + ",消息:" + e.detail.message);
+				if (e.detail.senderid == senderID) { //主流的消息
+					if (e.detail.message) {
+						let res = JSON.parse(e.detail.message)
+						if (res.status == 'joined') {
+							this.$refs.myVideo.ZwanSDK_SwitchMutilVideo(senderID)
+							this.$refs.myVideo.ZwanSDK_StreamStart(senderID, 0, 2, 1, 1, 1280, 720, 15, 300000, 800000, 1500000,
+								false, true, false, true, false, false, true, true, "udp", "H264") //纯观看
+							// this.$refs.myVideo.ZwanSDK_StreamStart(senderID, 0, 2, 1, 1, 1920, 1080, 15, 300000, 800000, 1500000,
+							// 	true,true,false,false,true, false, true,false, "udp", "H264")//纯语音
+						} else if (res.status == 'streamstart') {
+							// this.$refs.myVideo.ZwanSDK_Login("第二流", "自己房间", senderid => {
+							// 	senderID2 = senderid;
+							// });
+							// this.$refs.myVideo.ZwanSDK_Login("第三流", "roomSelf-pc-笋子杰", senderid => {
+							// 	senderID3 = senderid;
+							// });
+						} else if (res.status == 'streamstop') {
+
+						} else if (res.status == 'hangup') {
+
+						}
+					}
+
+				} else if (e.detail.senderid == senderID2) { //二流消息
+					if (e.detail.message) {
+						let res = JSON.parse(e.detail.message)
+						if (res.status == 'joined') {
+							// this.$refs.myVideo.ZwanSDK_StreamStart(senderID2, 1, 2, 0, 1, 640, 480, 15, 300000, 800000, 1500000,
+							// 	false, false,true, false, false, true, false, false, "udp", "H264")//纯推摄像头
+						} else if (res.status == 'streamstart') {
+							// this.$refs.myVideo.ZwanSDK_Login("第三流", "roomSelf-pc-笋子杰", senderid => {
+							// 	senderID3 = senderid;
+							// });
+						} else if (res.status == 'streamstop') {
+
+						} else if (res.status == 'hangup') {
+
+						}
+					}
+
+				} else if (e.detail.senderid == senderID3) { //三流消息
+					if (e.detail.message) {
+						let res = JSON.parse(e.detail.message)
+						if (res.status == 'joined') {
+							//  	this.$refs.myVideo.ZwanSDK_SwitchMutilVideo(senderID3)
+							// this.$refs.myVideo.ZwanSDK_StreamStart(senderID3, 0, 2, 1, 1, 1920, 1080, 15, 300000, 800000, 1500000,
+							// 	false,false,false,true,false, false, false,true, "udp", "H264")//纯观看
+						} else if (res.status == 'streamstart') {
+
+						} else if (res.status == 'streamstop') {
+
+						} else if (res.status == 'hangup') {
+
+						}
+					}
+
+				}
+
+
+
+
 			},
 			onQueryDevice: function(e) {
 				console.log("发送人ID:" + e.detail.senderid + ",查询海康设备:" + e.detail.querydevice);
@@ -346,7 +434,7 @@
 
 	.btnContainer {
 		padding: 10rpx;
-		margin-top: 200rpx;
+		margin-top: 10rpx;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -405,7 +493,7 @@
 		padding: 10rpx;
 		display: flex;
 		flex-direction: row;
-		align-items: center;
+		align-items: flex-start;
 		justify-content: space-between;
 	}
 
